@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Una cita contigo</title>
+  <!-- Para evitar errores de YouTube, publica esta carpeta en GitHub Pages o Netlify. Abrirla como file:// puede bloquear el reproductor. -->
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background:
+        linear-gradient(rgba(20, 8, 16, 0.68), rgba(20, 8, 16, 0.82)),
+        url("foto_00_angi.jpeg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 18px;
+      overflow-x: hidden;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 470px;
+      padding-bottom: 92px;
+    }
+
+    .card {
+      width: 100%;
+      padding: 26px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.38);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      animation: aparecer 0.45s ease;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .photo {
+      width: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 3px solid rgba(255, 255, 255, 0.82);
+      box-shadow: 0 10px 26px rgba(0,0,0,0.36);
+      margin-bottom: 16px;
+    }
+
+    .round-photo {
+      width: 165px;
+      height: 165px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.88);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 8px 0 12px;
+      font-size: 29px;
+    }
+
+    h2 {
+      margin: 8px 0 12px;
+      font-size: 24px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.45;
+      margin: 12px 0;
+    }
+
+    button, a.button {
+      display: inline-block;
+      border: none;
+      text-decoration: none;
+      padding: 14px 20px;
+      margin: 8px 5px;
+      border-radius: 999px;
+      background: #ff4f8b;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.18s, background 0.18s;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.22);
+    }
+
+    button:hover, a.button:hover {
+      transform: scale(1.05);
+      background: #ff2d75;
+    }
+
+    .secondary {
+      background: rgba(255, 255, 255, 0.23);
+    }
+
+    .secondary:hover {
+      background: rgba(255, 255, 255, 0.33);
+    }
+
+    .heart {
+      font-size: 46px;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.18); }
+    }
+
+    .progress {
+      height: 8px;
+      width: 100%;
+      background: rgba(255,255,255,0.2);
+      border-radius: 999px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: white;
+      border-radius: 999px;
+      transition: width 0.3s ease;
+    }
+
+    .answer {
+      display: block;
+      width: 100%;
+    }
+
+    .music-player {
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 20;
+      max-width: 470px;
+      margin: 0 auto;
+      background: rgba(20, 8, 16, 0.88);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.42);
+      display: none;
+    }
+
+    .music-player.active {
+      display: block;
+    }
+
+    .music-title {
+      font-size: 13px;
+      opacity: 0.88;
+      margin: 0 0 8px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 82px;
+      border: 0;
+      border-radius: 12px;
+    }
+
+    .tiny {
+      font-size: 14px;
+      opacity: 0.85;
+    }
+
+    .final-box {
+      background: rgba(255,255,255,0.16);
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app">
+    <div class="progress">
+      <div class="bar" id="bar"></div>
+    </div>
+
+    <section class="card" id="screen0">
+      <img class="round-photo" src="foto_00_angi.jpeg" alt="Foto especial">
+      <div class="heart">❤️</div>
+      <h1>Hola, mi amor</h1>
+      <p>Te hice una mini app porque tú no mereces una invitación normalita.</p>
+      <p>Primero dale al play a la canción aquí mismo. Después continúa con la sorpresa.</p>
+      <button onclick="showMusicAndContinue()">Ya le di al play, empezar ❤️</button>
+      <p class="tiny">No se abrirá otra pestaña. La canción se queda abajo mientras avanzas.</p>
+    </section>
+
+    <section class="card hidden" id="screen1">
+      <img class="photo" src="foto_01_videollamada.jpeg" alt="Recuerdo">
+      <h2>Capítulo 1</h2>
+      <p>Empezamos con nuestras videollamadas, nuestros momentos tontos y esas caras que solo nosotros entendemos.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen2">
+      <h2>Pregunta seria</h2>
+      <p>¿Sabes por qué hice esto?</p>
+      <button class="answer" onclick="saveAnswer('motivo','Porque eres mi persona favorita')">Porque eres mi persona favorita</button>
+      <button class="answer" onclick="saveAnswer('motivo','Porque me encantas demasiado')">Porque me encantas demasiado</button>
+      <button class="answer" onclick="saveAnswer('motivo','Porque soy un friki enamorado')">Porque soy un friki enamorado</button>
+    </section>
+
+    <section class="card hidden" id="screen3">
+      <img class="photo" src="foto_04_llamada.jpeg" alt="Recuerdo">
+      <h2>Capítulo 2</h2>
+      <p>Hay llamadas que parecen simples, pero para mí son ratitos de estar cerca aunque estemos lejos.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen4">
+      <h2>Pregunta importante</h2>
+      <p>Para la cita, ¿qué nivel de mimos aceptas?</p>
+      <button class="answer" onclick="saveAnswer('mimos','Nivel normal')">Nivel normal</button>
+      <button class="answer" onclick="saveAnswer('mimos','Nivel alto')">Nivel alto</button>
+      <button class="answer" onclick="saveAnswer('mimos','Modo koala')">Modo koala</button>
+      <button class="answer" onclick="saveAnswer('mimos','Todos los mimos disponibles')">Todos los mimos disponibles</button>
+    </section>
+
+    <section class="card hidden" id="screen5">
+      <img class="photo" src="foto_05_juntos.jpeg" alt="Recuerdo juntos">
+      <h2>Capítulo 3</h2>
+      <p>Esta foto tenía que estar aquí, porque cuando te veo sonreír así se me arregla un poco el mundo.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen6">
+      <h2>Elige el plan</h2>
+      <p>¿Qué tipo de cita te apetece?</p>
+      <button class="answer" onclick="saveAnswer('plan','Cena tranquila')">Cena tranquila</button>
+      <button class="answer" onclick="saveAnswer('plan','Noche de peli')">Noche de peli</button>
+      <button class="answer" onclick="saveAnswer('plan','Paseo y helado')">Paseo y helado</button>
+      <button class="answer" onclick="saveAnswer('plan','Plan sorpresa total')">Plan sorpresa total</button>
+    </section>
+
+    <section class="card hidden" id="screen7">
+      <img class="photo" src="foto_07_paseo.jpeg" alt="Recuerdo paseo">
+      <h2>Capítulo 4</h2>
+      <p>Me gusta cuando somos nosotros: haciendo el tonto, paseando, riéndonos y siendo nuestro propio desastre bonito.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen8">
+      <h2>Otra pregunta</h2>
+      <p>¿Qué ingrediente no puede faltar en nuestra cita?</p>
+      <button class="answer" onclick="saveAnswer('ingrediente','Besitos')">Besitos</button>
+      <button class="answer" onclick="saveAnswer('ingrediente','Risas')">Risas</button>
+      <button class="answer" onclick="saveAnswer('ingrediente','Comida rica')">Comida rica</button>
+      <button class="answer" onclick="saveAnswer('ingrediente','Todo lo anterior')">Todo lo anterior</button>
+    </section>
+
+    <section class="card hidden" id="screen9">
+      <img class="photo" src="foto_08_coche.jpeg" alt="Recuerdo">
+      <h2>Capítulo 5</h2>
+      <p>Porque tú, incluso en una foto cualquiera, tienes esa forma de hacer que todo parezca más bonito.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen10">
+      <h2>Última decisión</h2>
+      <p>¿Aceptas oficialmente tener una cita conmigo?</p>
+      <button class="answer" onclick="saveAnswer('acepta','Sí, acepto')">Sí, acepto</button>
+      <button class="answer" onclick="saveAnswer('acepta','Obviamente sí')">Obviamente sí</button>
+      <button class="answer" onclick="saveAnswer('acepta','Ya estabas tardando')">Ya estabas tardando</button>
+    </section>
+
+    <section class="card hidden" id="screen11">
+      <img class="photo" src="foto_06_mimos.jpeg" alt="Recuerdo juntos">
+      <div class="heart">💌</div>
+      <h1>Cita reservada</h1>
+      <p>Tu cita conmigo queda oficialmente confirmada.</p>
+
+      <div class="final-box">
+        <p><strong>Plan elegido:</strong> <span id="finalPlan"></span></p>
+        <p><strong>Nivel de mimos:</strong> <span id="finalMimos"></span></p>
+        <p><strong>Ingrediente obligatorio:</strong> <span id="finalIngrediente"></span></p>
+        <p><strong>Código de reserva:</strong><br>TE AMO 2026</p>
+      </div>
+
+      <p>No quería mandarte solo un mensaje. Quería hacerte una app, porque tú no eres un plan cualquiera.</p>
+      <a class="button secondary" href="https://www.youtube.com/watch?v=7XPmRUp_Yf4&list=RD7XPmRUp_Yf4&start_radio=1" target="_blank">Abrir canción en YouTube</a>
+    </section>
+  </div>
+
+  <div class="music-player active" id="musicPlayer">
+    <p class="music-title">Dale al play y luego toca “empezar” ❤️</p>
+    <iframe
+      id="ytplayer"
+      src="https://www.youtube-nocookie.com/embed/7XPmRUp_Yf4?rel=0&playsinline=1"
+      title="Nuestra canción"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+  </div>
+
+  <script>
+    let current = 0;
+    const totalScreens = 11;
+    const answers = {};
+
+    function updateProgress() {
+      const percent = (current / totalScreens) * 100;
+      document.getElementById('bar').style.width = percent + '%';
+    }
+
+    function showMusicAndContinue() {
+      const player = document.getElementById('musicPlayer');
+      const title = player.querySelector('.music-title');
+
+      player.classList.add('active');
+      title.textContent = 'Nuestra canción sigue sonando mientras avanzas ❤️';
+
+      nextScreen();
+    }
+
+    function nextScreen() {
+      document.getElementById('screen' + current).classList.add('hidden');
+      current++;
+      document.getElementById('screen' + current).classList.remove('hidden');
+      updateProgress();
+
+      if (current === 11) {
+        fillFinal();
+      }
+    }
+
+    function saveAnswer(key, value) {
+      answers[key] = value;
+      nextScreen();
+    }
+
+    function fillFinal() {
+      document.getElementById('finalPlan').textContent = answers.plan || 'Plan sorpresa total';
+      document.getElementById('finalMimos').textContent = answers.mimos || 'Todos los mimos disponibles';
+      document.getElementById('finalIngrediente').textContent = answers.ingrediente || 'Todo lo anterior';
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+</html>
