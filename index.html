@@ -299,7 +299,53 @@
       <button class="answer" onclick="saveAnswer('acepta','Ya estabas tardando')">Ya estabas tardando</button>
     </section>
 
+
     <section class="card hidden" id="screen11">
+      <h2>Lo que a veces no sé decir</h2>
+      <p>Hay cosas que me cuesta decir en voz alta.</p>
+      <p>No porque no las sienta, sino porque a veces soy una persona de pocas palabras.</p>
+      <p>Pero contigo quiero aprender. Quiero aprender a hablar, a explicarme y a decirte lo que siento sin guardármelo.</p>
+      <button onclick="nextScreen()">Sigue, que aún no he terminado ❤️</button>
+    </section>
+
+    <section class="card hidden" id="screen12">
+      <h2>Eres muy importante para mí</h2>
+      <p>Necesito que sepas algo: eres muy importante para mí.</p>
+      <p>Más de lo que a veces consigo demostrar.</p>
+      <p>Me importas en los días buenos, en los días raros, en los días difíciles y en esos momentos donde no sé ni cómo explicarme.</p>
+      <button onclick="nextScreen()">Seguir leyendo</button>
+    </section>
+
+    <section class="card hidden" id="screen13">
+      <h2>Te amo</h2>
+      <p>Te amo. Y no quiero que eso se quede solo en una frase bonita.</p>
+      <p>Quiero que se note en cómo te cuido, en cómo te escucho, en cómo intento mejorar y en cómo sigo eligiéndote.</p>
+      <p>A veces me faltan palabras, pero lo que siento por ti no es pequeño.</p>
+      <button onclick="nextScreen()">❤️</button>
+    </section>
+
+    <section class="card hidden" id="screen14">
+      <h2>Te necesito mucho</h2>
+      <p>Te necesito mucho, sí.</p>
+      <p>Pero no como una carga, ni como una obligación.</p>
+      <p>Te necesito porque contigo me siento en casa. Porque hablar contigo me calma. Porque cuando estás cerca, todo pesa un poco menos.</p>
+      <p>Eres mi persona favorita incluso cuando el mundo está raro.</p>
+      <button onclick="nextScreen()">Siguiente</button>
+    </section>
+
+    <section class="card hidden" id="screen15">
+      <h2>Una promesa</h2>
+      <p>No soy perfecto.</p>
+      <p>A veces me cuesta hablar, a veces me bloqueo, a veces digo menos de lo que siento.</p>
+      <p>Pero quiero intentarlo. Quiero aprender a decirte “te amo” de más formas: con palabras, con detalles, con tiempo, con paciencia y con hechos.</p>
+      <p><strong>¿Me dejas seguir aprendiendo a quererte mejor?</strong></p>
+      <button class="answer" onclick="saveAnswer('promesa','Sí ❤️')">Sí ❤️</button>
+      <button class="answer" onclick="saveAnswer('promesa','Sí, pero con mimos')">Sí, pero con mimos</button>
+      <button class="answer" onclick="saveAnswer('promesa','Sí, pero me debes una cita')">Sí, pero me debes una cita</button>
+      <button class="answer" onclick="saveAnswer('promesa','Sí, mi amor')">Sí, mi amor</button>
+    </section>
+
+    <section class="card hidden" id="screen16">
       <img class="photo" src="foto_06_mimos.jpeg" alt="Recuerdo juntos">
       <div class="heart">💌</div>
       <h1>Cita reservada</h1>
@@ -309,10 +355,27 @@
         <p><strong>Plan elegido:</strong> <span id="finalPlan"></span></p>
         <p><strong>Nivel de mimos:</strong> <span id="finalMimos"></span></p>
         <p><strong>Ingrediente obligatorio:</strong> <span id="finalIngrediente"></span></p>
+        <p><strong>Promesa aceptada:</strong> <span id="finalPromesa"></span></p>
         <p><strong>Código de reserva:</strong><br>TE AMO 2026</p>
       </div>
 
       <p>No quería mandarte solo un mensaje. Quería hacerte una app, porque tú no eres un plan cualquiera.</p>
+      <p>Esto no iba solo de una cita. Iba de decirte que te amo, que te necesito, que eres muy importante para mí y que quiero seguir construyendo contigo.</p>
+      <p>Soy de pocas palabras, pero contigo quiero aprender a tener muchas.</p>
+
+      <button onclick="toggleLetter()">Leer carta completa 💌</button>
+
+      <div class="final-box hidden" id="letterBox">
+        <p><strong>Amor,</strong></p>
+        <p>A veces me cuesta poner en palabras todo lo que siento por ti. Me salen bromas, me salen tonterías, me sale hacer una app, pero no siempre me sale decirte de frente lo mucho que significas para mí.</p>
+        <p>Te amo muchísimo. Te necesito cerca, te necesito en mi vida, te necesito como esa persona que me hace querer ser mejor. No porque sin ti no sea nada, sino porque contigo siento que puedo ser más yo.</p>
+        <p>Quiero aprender a hablar más, a explicarme mejor, a no quedarme callado cuando lo que siento por dentro es enorme.</p>
+        <p>Y quiero aprenderlo contigo, a tu lado, despacito y sin miedo.</p>
+        <p>Gracias por estar, por quererme, por aguantar mis cosas y por ser tú.</p>
+        <p><strong>Esta cita es solo una excusa para recordarte algo: eres mi persona favorita.</strong></p>
+      </div>
+
+      <p><strong>Código final:</strong><br>MI CASA ERES TÚ</p>
       <a class="button secondary" href="https://www.youtube.com/watch?v=7XPmRUp_Yf4&list=RD7XPmRUp_Yf4&start_radio=1" target="_blank">Abrir canción en YouTube</a>
     </section>
   </div>
@@ -326,7 +389,7 @@
 
   <script>
     let current = 0;
-    const totalScreens = 11;
+    const totalScreens = 16;
     const answers = {};
 
     function updateProgress() {
@@ -382,7 +445,7 @@
       document.getElementById('screen' + current).classList.remove('hidden');
       updateProgress();
 
-      if (current === 11) {
+      if (current === 16) {
         fillFinal();
       }
     }
@@ -396,6 +459,11 @@
       document.getElementById('finalPlan').textContent = answers.plan || 'Plan sorpresa total';
       document.getElementById('finalMimos').textContent = answers.mimos || 'Todos los mimos disponibles';
       document.getElementById('finalIngrediente').textContent = answers.ingrediente || 'Todo lo anterior';
+      document.getElementById('finalPromesa').textContent = answers.promesa || 'Sí, mi amor';
+    }
+
+    function toggleLetter() {
+      document.getElementById('letterBox').classList.toggle('hidden');
     }
 
     updateProgress();
