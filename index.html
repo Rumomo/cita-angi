@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Una cita contigo</title>
-  <!-- Para evitar errores de YouTube, publica esta carpeta en GitHub Pages o Netlify. Abrirla como file:// puede bloquear el reproductor. -->
   <style>
     * {
       box-sizing: border-box;
@@ -185,7 +184,7 @@
       margin: 0 0 8px;
     }
 
-    iframe {
+    #ytplayer iframe {
       width: 100%;
       height: 82px;
       border: 0;
@@ -217,9 +216,9 @@
       <div class="heart">❤️</div>
       <h1>Hola, mi amor</h1>
       <p>Te hice una mini app porque tú no mereces una invitación normalita.</p>
-      <p>Primero dale al play a la canción aquí mismo. Después continúa con la sorpresa.</p>
-      <button onclick="showMusicAndContinue()">Ya le di al play, empezar ❤️</button>
-      <p class="tiny">No se abrirá otra pestaña. La canción se queda abajo mientras avanzas.</p>
+      <p>Cuando pulses, intentaré arrancar la canción aquí mismo y empezará la sorpresa.</p>
+      <button onclick="startExperience()">Abrir sorpresa con música</button>
+      <p class="tiny">Si YouTube se pone pesado, pulsa el botón rojo del reproductor una vez.</p>
     </section>
 
     <section class="card hidden" id="screen1">
@@ -318,17 +317,12 @@
     </section>
   </div>
 
-  <div class="music-player active" id="musicPlayer">
-    <p class="music-title">Dale al play y luego toca “empezar” ❤️</p>
-    <iframe
-      id="ytplayer"
-      src="https://www.youtube-nocookie.com/embed/7XPmRUp_Yf4?rel=0&playsinline=1"
-      title="Nuestra canción"
-      allow="autoplay; encrypted-media; picture-in-picture"
-      allowfullscreen
-      referrerpolicy="strict-origin-when-cross-origin">
-    </iframe>
+  <div class="music-player" id="musicPlayer">
+    <p class="music-title" id="musicTitle">Preparando nuestra canción ❤️</p>
+    <div id="ytplayer"></div>
   </div>
+
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
     let current = 0;
@@ -340,12 +334,44 @@
       document.getElementById('bar').style.width = percent + '%';
     }
 
-    function showMusicAndContinue() {
-      const player = document.getElementById('musicPlayer');
-      const title = player.querySelector('.music-title');
+    let youtubePlayer = null;
+    let youtubeReady = false;
 
-      player.classList.add('active');
+    function onYouTubeIframeAPIReady() {
+      youtubePlayer = new YT.Player('ytplayer', {
+        height: '82',
+        width: '100%',
+        videoId: '7XPmRUp_Yf4',
+        playerVars: {
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1
+        },
+        events: {
+          onReady: function () {
+            youtubeReady = true;
+            document.getElementById('musicTitle').textContent = 'Lista para sonar cuando empieces ❤️';
+          }
+        }
+      });
+    }
+
+    function startExperience() {
+      const box = document.getElementById('musicPlayer');
+      const title = document.getElementById('musicTitle');
+
+      box.classList.add('active');
       title.textContent = 'Nuestra canción sigue sonando mientras avanzas ❤️';
+
+      // Este play se lanza justo tras el toque en el botón inicial.
+      // En ordenador suele funcionar. En algunos móviles YouTube exige tocar el botón rojo.
+      try {
+        if (youtubePlayer && youtubeReady && typeof youtubePlayer.playVideo === 'function') {
+          youtubePlayer.playVideo();
+        }
+      } catch (e) {
+        title.textContent = 'Pulsa play en el reproductor y seguimos ❤️';
+      }
 
       nextScreen();
     }
